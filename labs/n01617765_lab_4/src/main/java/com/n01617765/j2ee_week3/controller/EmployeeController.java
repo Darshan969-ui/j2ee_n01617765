@@ -1,7 +1,8 @@
     package com.n01617765.j2ee_week3.controller;
 
     import com.n01617765.j2ee_week3.model.Employee;
-    import com.n01617765.j2ee_week3.service.EmployeeService;
+    import com.n01617765.j2ee_week3.service.EmployeeServiceImpl;
+    import com.n01617765.j2ee_week3.service.EmployeeServiceImpl;
     import jakarta.validation.Valid;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.stereotype.Controller;
@@ -13,14 +14,15 @@
     import org.slf4j.LoggerFactory;
 
     import java.util.List;
+    import java.util.Optional;
 
     @Controller
     public class EmployeeController {
 
-        private final EmployeeService employeeService;
+        private final EmployeeServiceImpl employeeService;
 
         @Autowired
-        public EmployeeController(EmployeeService employeeService) {
+        public EmployeeController(EmployeeServiceImpl employeeService) {
 
             this.employeeService = employeeService;
         }
@@ -58,11 +60,10 @@
         }
 
 
-
         @GetMapping("/search")
         public String searchEmployee(@RequestParam Integer id, Model model) {
-            Employee employee = employeeService.getEmployeeById(id);
-            if (employee != null) {
+            Optional<Employee> employee = employeeService.getEmployeeById(id);
+            if (employee.isPresent()) {
                 model.addAttribute("employees", List.of(employee)); // Show only the searched employee
             } else {
                 model.addAttribute("employees", employeeService.getAllEmployees()); // Show all if not found

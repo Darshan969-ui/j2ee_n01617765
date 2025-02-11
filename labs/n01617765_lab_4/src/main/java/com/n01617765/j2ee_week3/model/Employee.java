@@ -1,6 +1,10 @@
 package com.n01617765.j2ee_week3.model;
 
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.validation.constraints.*;
@@ -8,8 +12,10 @@ import jakarta.validation.constraints.Size;
 
 @Getter
 @Setter
+@Entity
 public class Employee {
-
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
         private Integer id;
 
         @NotNull(message = "First Name cannot be empty")
