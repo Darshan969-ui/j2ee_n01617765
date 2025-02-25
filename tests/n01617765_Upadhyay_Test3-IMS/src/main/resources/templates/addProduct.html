@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Product Management System</title>
+
+    <script>
+        function DeleteButton(id) {
+            if (confirm("Would you like to delete this employee?")) {
+                window.location.href = "/delete/" + id;
+            }
+        }
+
+        function showUpdateForm(id) {
+            document.getElementById("updateForm-" + id).style.display = "block";
+        }
+    </script>
+</head>
+<body>
+
+<!-- Header Section -->
+<div class="header">
+    <h1>Employee Management System</h1>
+</div>
+
+<!-- Logo Section -->
+<!--<img th:src="@{/images/company.jpg}" alt="Company Logo" class="logo" />-->
+
+<!-- Add New Employee Form -->
+<div class="form-container">
+    <h2>Add New Product</h2>
+    <form th:action="@{/addProduct}" th:object="${addoneProduct}" method="post">
+        <input type="text" th:field="*{Name}" placeholder="Name" />
+        <div class="error-message" th:if="${#fields.hasErrors('Name')}" th:errors="*{Name}"></div>
+
+        <input type="text" th:field="*{Description}" placeholder="Description" />
+        <div class="error-message" th:if="${#fields.hasErrors('Description')}" th:errors="*{Description}"></div>
+
+        <input type="text" th:field="*{price}" placeholder="price" />
+        <div class="error-message" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+
+        <input type="text" th:field="*{stock}" placeholder="stock" />
+        <div class="error-message" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></div>
+
+        <button type="submit">Add Product</button>
+    </form>
+</div>
+
+<!--&lt;!&ndash; Employee Search Form &ndash;&gt;-->
+<!--<div class="form-container">-->
+<!--    <h2>Search Employee by ID</h2>-->
+<!--    <form th:action="@{/search}" method="get">-->
+<!--        <input type="number" name="id" placeholder="Enter Employee ID" required />-->
+<!--        <button type="submit">Search</button>-->
+<!--    </form>-->
+<!--</div>-->
+
+<!-- Employee List -->
+<h2 style="text-align: center;">Employee List</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Stock</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Ensure the 'product' list is being passed to the model and displayed correctly -->
+    <tr th:each="product : ${products}">
+        <td th:text="${product.id}"></td>
+        <td th:text="${product.name}"></td>
+        <td th:text="${product.description}"></td>
+        <td th:text="${product.price}"></td>
+        <td th:text="${product.stock}"></td>
+        <td class="action-buttons">
+            <button type="button" th:attr="onclick=|showUpdateForm(${product.id})|">Edit</button>
+            <button th:attr="onclick=|DeleteButton(${product.id})|">Delete</button>
+        </td>
+    </tr>
+
+
+    <tr th:each="product : $products}">
+        <td colspan="5">
+            <form th:id="|updateForm-${product.id}|" th:action="@{/updateProduct}" method="post" style="display:none;">
+                <input type="hidden" name="id" th:value="${product.id}" />
+                <input type="text" name="firstName" th:value="${product.name}" required />
+                <input type="text" name="lastName" th:value="${product.description}" required />
+                <input type="text" name="emailId" th:value="${product.price}" required />
+                <input type="text" name="emailId" th:value="${product.stock}" required />
+                <button type="submit">Update</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Footer Section -->
+<div class="footer">
+    <p>&copy; 2025 product Management System | All rights reserved.</p>
+</div>
+
+</body>
+</html>
