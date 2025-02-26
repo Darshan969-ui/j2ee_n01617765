@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+</head>
+<body>
+
+<form action="/Home" method="get">
+    <!-- Ensure userName is passed -->
+    <input type="hidden" name="userName" th:value="${userName}">
+    <p>Welcome, <span th:text="${firstName}"></span> <span th:text="${lastName}"></span>!</p>
+</form>
+
+</body>
+</html>
