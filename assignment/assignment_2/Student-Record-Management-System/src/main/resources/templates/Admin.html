@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin - Student Management</title>
+</head>
+<body>
+
+<h1>Student Management</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Address</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Enrolled Course Id</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="student : ${students}">
+        <td th:text="${student.studentId}"></td>
+        <td th:text="${student.firstName}"></td>
+        <td th:text="${student.lastName}"></td>
+        <td th:text="${student.age}"></td>
+        <td th:text="${student.gender}"></td>
+        <td th:text="${student.address}"></td>
+        <td th:text="${student.email}"></td>
+        <td th:text="${student.phone}"></td>
+        <td th:text="${student.enrolledCourseIds}"></td>
+        <td>
+            <a th:href="@{/admin/students/edit/{id}(id=${student.getStudentId()})}">Edit</a>
+            <a th:href="@{/admin/students/delete/{id}(id=${student.getStudentId()})}" onclick="return confirm('Delete this student?')">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

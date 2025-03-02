@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Student Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid black;
+      padding: 10px;
+      text-align: left;
+    }
+    .header {
+      background-color: #007bff;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+    .btn {
+      padding: 5px 10px;
+      text-decoration: none;
+      background-color: #28a745;
+      color: white;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-danger {
+      background-color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>Welcome, <span th:text="${student.firstName}"></span> <span th:text="${student.lastName}"></span>!</h1>
+  </div>
+
+  <h2>Your Personal Details</h2>
+  <table>
+    <tr>
+      <th>Username:</th>
+      <td th:text="${student.userName}"></td>
+    </tr>
+    <tr>
+      <th>Email:</th>
+      <td th:text="${student.email}"></td>
+    </tr>
+    <tr>
+      <th>Phone:</th>
+      <td th:text="${student.phone}"></td>
+    </tr>
+    <tr>
+      <th>Age:</th>
+      <td th:text="${student.age}"></td>
+    </tr>
+    <tr>
+      <th>Address:</th>
+      <td th:text="${student.address}"></td>
+    </tr>
+    <tr>
+      <th>Gender:</th>
+      <td th:text="${student.gender}"></td>
+    </tr>
+    <tr>
+      <th>Created Date:</th>
+      <td th:text="${#dates.format(student.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+    </tr>
+    <tr>
+      <th>Last Modified Date:</th>
+      <td th:text="${#dates.format(student.modifiedDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+    </tr>
+  </table>
+
+  <h2>Available Courses</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Course Code</th>
+      <th>Course Name</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="course : ${courses}">
+      <td th:text="${course.courseCode}"></td>
+      <td th:text="${course.courseName}"></td>
+      <td th:text="${course.courseDescription}"></td>
+      <td>
+        <form th:action="@{/{studentId}/enroll/{courseId}(studentId=${student.studentId}, courseId=${course.courseId})}" method="post">
+          <button type="submit" class="btn">Enroll</button>
+        </form>
+<!--        <form th:action="@{/students/{studentId}/drop/{courseId}(studentId=${student.studentId}, courseId=${course.courseId})}" method="post">-->
+<!--          <button type="submit" class="btn btn-danger">Drop</button>-->
+<!--        </form>-->
+      </td>
+    </tr>
+    </tbody>
+  </table>
+<!--  <h2>Your Enrolled Courses</h2>-->
+<!--  <table>-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--      <th>Course Code</th>-->
+<!--      <th>Course Name</th>-->
+<!--      <th>Description</th>-->
+<!--      <th>Actions</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    <tr th:each="course : ${student.courses}">-->
+<!--&lt;!&ndash;      <td th:text="${course.courseId}"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;      <td th:text="${student.courseCode}"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;      <td th:text="${student.courseDescription}"></td>&ndash;&gt;-->
+<!--      <td>-->
+<!--&lt;!&ndash;        <form th:action="@{/students/{studentId}/drop/{courseId}(studentId=${student.studentId}, courseId=${course.courseId})}" method="post">&ndash;&gt;-->
+<!--&lt;!&ndash;          <button type="submit" class="btn btn-danger">Drop</button>&ndash;&gt;-->
+<!--&lt;!&ndash;        </form>&ndash;&gt;-->
+<!--      </td>-->
+
+
+
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--  </table>-->
+  <h2>Your Enrolled Courses</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Course Code</th>
+      <th>Course Name</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="course : ${courses}">
+      <th:block th:if="${#lists.contains(student.getEnrolledCourseIds(), course.courseId)}">
+        <td th:text="${course.courseCode}"></td>
+        <td th:text="${course.courseName}"></td>
+        <td th:text="${course.courseDescription}"></td>
+        <td>
+          <form th:action="@{/{studentId}/drop/{courseId}(studentId=${student.studentId}, courseId=${course.courseId})}" method="post">
+            <button type="submit" class="btn btn-danger">Drop</button>
+          </form>
+        </td>
+      </th:block>
+    </tr>
+    </tbody>
+  </table>
+
+
+
+</div>
+
+</body>
+</html>
